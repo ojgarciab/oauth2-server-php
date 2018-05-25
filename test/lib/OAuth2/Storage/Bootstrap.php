@@ -278,7 +278,6 @@ class Bootstrap
         try {
             $sys->drop_keyspace('oauth2_test');
         } catch (\cassandra\InvalidRequestException $e) {
-
         }
     }
 
@@ -323,7 +322,6 @@ class Bootstrap
         $cf->insert("oauth_public_keys:", array('__data' => json_encode(array("public_key" => $this->getTestPublicKey(), "private_key" =>  $this->getTestPrivateKey(), "encryption_algorithm" => "RS256"))));
 
         $cf->insert("oauth_users:testuser", array('__data' =>json_encode(array("password" => "password", "email" => "testuser@test.com", "email_verified" => true))));
-
     }
 
     private function createSqliteDb(\PDO $pdo)
@@ -430,31 +428,31 @@ class Bootstrap
 
     private function createCouchbaseDB(\Couchbase $db)
     {
-        $db->set('oauth_clients-oauth_test_client',json_encode(array(
+        $db->set('oauth_clients-oauth_test_client', json_encode(array(
             'client_id' => "oauth_test_client",
             'client_secret' => "testpass",
             'redirect_uri' => "http://example.com",
             'grant_types' => 'implicit password'
         )));
 
-        $db->set('oauth_access_tokens-testtoken',json_encode(array(
+        $db->set('oauth_access_tokens-testtoken', json_encode(array(
             'access_token' => "testtoken",
             'client_id' => "Some Client"
         )));
 
-        $db->set('oauth_authorization_codes-testcode',json_encode(array(
+        $db->set('oauth_authorization_codes-testcode', json_encode(array(
             'access_token' => "testcode",
             'client_id' => "Some Client"
         )));
 
-        $db->set('oauth_users-testuser',json_encode(array(
+        $db->set('oauth_users-testuser', json_encode(array(
             'username' => 'testuser',
             'password' => 'password',
             'email' => 'testuser@test.com',
             'email_verified' => true,
         )));
 
-        $db->set('oauth_jwt-oauth_test_client',json_encode(array(
+        $db->set('oauth_jwt-oauth_test_client', json_encode(array(
             'client_id' => 'oauth_test_client',
             'key'       => $this->getTestPublicKey(),
             'subject'   => 'test_subject',

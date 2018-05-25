@@ -6,6 +6,7 @@ use Aws\DynamoDb\DynamoDbClient;
 
 use OAuth2\OpenID\Storage\UserClaimsInterface;
 use OAuth2\OpenID\Storage\AuthorizationCodeInterface as OpenIDAuthorizationCodeInterface;
+
 /**
  * DynamoDB storage for all storage types
  *
@@ -52,7 +53,7 @@ class DynamoDB implements
             if (!is_array($connection)) {
                 throw new \InvalidArgumentException('First argument to OAuth2\Storage\Dynamodb must be an instance a configuration array containt key, secret, region');
             }
-            if (!array_key_exists("key",$connection) || !array_key_exists("secret",$connection) || !array_key_exists("region",$connection) ) {
+            if (!array_key_exists("key", $connection) || !array_key_exists("secret", $connection) || !array_key_exists("region", $connection)) {
                 throw new \InvalidArgumentException('First argument to OAuth2\Storage\Dynamodb must be an instance a configuration array containt key, secret, region');
             }
             $this->client = DynamoDbClient::factory(array(
@@ -113,7 +114,7 @@ class DynamoDB implements
         }
         $result = $this->dynamo2array($result);
         foreach (array('client_id', 'client_secret', 'redirect_uri', 'grant_types', 'scope', 'user_id') as $key => $val) {
-            if (!array_key_exists ($val, $result)) {
+            if (!array_key_exists($val, $result)) {
                 $result[$val] = null;
             }
         }
@@ -158,7 +159,7 @@ class DynamoDB implements
             return false ;
         }
         $token = $this->dynamo2array($result);
-        if (array_key_exists ('expires', $token)) {
+        if (array_key_exists('expires', $token)) {
             $token['expires'] = strtotime($token['expires']);
         }
 
@@ -179,7 +180,6 @@ class DynamoDB implements
         ));
 
         return true;
-
     }
 
     public function unsetAccessToken($access_token)
@@ -204,13 +204,12 @@ class DynamoDB implements
             return false ;
         }
         $token = $this->dynamo2array($result);
-        if (!array_key_exists("id_token", $token )) {
+        if (!array_key_exists("id_token", $token)) {
             $token['id_token'] = null;
         }
         $token['expires'] = strtotime($token['expires']);
 
         return $token;
-
     }
 
     public function setAuthorizationCode($authorization_code, $client_id, $user_id, $redirect_uri, $expires, $scope = null, $id_token = null)
@@ -231,7 +230,6 @@ class DynamoDB implements
 
     public function expireAuthorizationCode($code)
     {
-
         $result = $this->client->deleteItem(array(
             'TableName' =>  $this->config['code_table'],
             'Key' => $this->client->formatAttributes(array("authorization_code" => $code))
@@ -381,7 +379,6 @@ class DynamoDB implements
         ));
 
         return true;
-
     }
 
     /* ScopeInterface */
@@ -409,7 +406,6 @@ class DynamoDB implements
 
     public function getDefaultScope($client_id = null)
     {
-
         $result = $this->client->query(array(
             'TableName' => $this->config['scope_table'],
             'IndexName' => 'is_default-index',
@@ -475,7 +471,6 @@ class DynamoDB implements
     /* PublicKeyInterface */
     public function getPublicKey($client_id = '0')
     {
-
         $result = $this->client->getItem(array(
             "TableName"=> $this->config['public_key_table'],
             "Key" => array('client_id'   => array('S' => $client_id))
@@ -486,7 +481,6 @@ class DynamoDB implements
         $token = $this->dynamo2array($result);
 
         return $token['public_key'];
-
     }
 
     public function getPrivateKey($client_id = '0')

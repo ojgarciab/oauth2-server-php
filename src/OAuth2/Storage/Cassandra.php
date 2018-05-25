@@ -30,7 +30,8 @@ use InvalidArgumentException;
  *
  * @see test/lib/OAuth2/Storage/Bootstrap::getCassandraStorage
  */
-class Cassandra implements AuthorizationCodeInterface,
+class Cassandra implements
+    AuthorizationCodeInterface,
     AccessTokenInterface,
     ClientCredentialsInterface,
     UserCredentialsInterface,
@@ -41,7 +42,6 @@ class Cassandra implements AuthorizationCodeInterface,
     UserClaimsInterface,
     OpenIDAuthorizationCodeInterface
 {
-
     private $cache;
 
     /**
@@ -489,7 +489,7 @@ class Cassandra implements AuthorizationCodeInterface,
             return false;
         }
 
-        if (isset($jwt['subject']) && $jwt['subject'] == $subject ) {
+        if (isset($jwt['subject']) && $jwt['subject'] == $subject) {
             return $jwt['key'];
         }
 
