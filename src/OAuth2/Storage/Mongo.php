@@ -16,7 +16,8 @@ use OAuth2\OpenID\Storage\AuthorizationCodeInterface as OpenIDAuthorizationCodeI
  *
  * @author Julien Chaumond <chaumond@gmail.com>
  */
-class Mongo implements AuthorizationCodeInterface,
+class Mongo implements
+    AuthorizationCodeInterface,
     AccessTokenInterface,
     ClientCredentialsInterface,
     UserCredentialsInterface,
